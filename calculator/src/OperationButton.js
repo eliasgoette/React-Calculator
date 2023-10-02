@@ -3,7 +3,7 @@ import { ACTIONS } from './App';
 
 function OperationButton({ dispatch, operation }) {
   return (
-    <button onClick={() => {dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation } })}}>
+    <button value={operation} onClick={() => {dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation } })}}>
       {operation}
     </button>
   );

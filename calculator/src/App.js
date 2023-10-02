@@ -147,21 +147,39 @@ function formatOperand(operand) {
 function App() {
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if(! isNaN(e.key) || e.key === '.')
+      if(! isNaN(e.key) || e.key === '.') {
+        focusButton(e.key);
         return dispatch({type: ACTIONS.ADD_DIGIT, payload: {digit: e.key}});
+      }
 
-      if(e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/')
+      if(e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        focusButton(e.key);
         return dispatch({type: ACTIONS.CHOOSE_OPERATION, payload: {operation: e.key}});
+      }
 
-      if(e.key === '=' || e.key.toUpperCase() === 'ENTER')
+      if(e.key === '=' || e.key.toUpperCase() === 'ENTER') {
+        focusButton('=');
         return dispatch({type: ACTIONS.EVALUATE});
+      }
 
-      if(e.key.toUpperCase() === 'ESCAPE')
+      if(e.key.toUpperCase() === 'ESCAPE') {
+        focusButton('CE');
         return dispatch({type: ACTIONS.CLEAR});
+      }
 
-      if(e.key.toUpperCase() === 'BACKSPACE')
+      if(e.key.toUpperCase() === 'BACKSPACE') {
+        focusButton('C');
         return dispatch({type: ACTIONS.REMOVE_DIGIT});
+      }
     };
+
+    const focusButton = (key) => {
+      let buttonForKey = document.querySelector(`button[value='${key}']`);
+
+      if(buttonForKey !== null) {
+        buttonForKey.focus();
+      }
+    }
   
     document.querySelector('html').addEventListener('keydown', handleKeyDown);
   
@@ -179,8 +197,8 @@ function App() {
         <div className="previous-operand">{formatOperand(previousOperand)} {operation}</div>
         <div className="current-operand">{formatOperand(currentOperand)}</div>
       </div>
-      <button className="span-two" onClick={() => dispatch({type: ACTIONS.CLEAR})}>CE</button>
-      <button onClick={() => dispatch({type: ACTIONS.REMOVE_DIGIT})}>C</button>
+      <button value="CE" className="span-two" onClick={() => dispatch({type: ACTIONS.CLEAR})}>CE</button>
+      <button value="C" onClick={() => dispatch({type: ACTIONS.REMOVE_DIGIT})}>C</button>
       <OperationButton operation="/" dispatch={dispatch} />
       <DigitButton digit="1" dispatch={dispatch} />
       <DigitButton digit="2" dispatch={dispatch} />
@@ -196,7 +214,7 @@ function App() {
       <OperationButton operation="-" dispatch={dispatch} />
       <DigitButton digit="." dispatch={dispatch} />
       <DigitButton digit="0" dispatch={dispatch} />
-      <button className="span-two" onClick={() => dispatch({type: ACTIONS.EVALUATE})}>=</button>
+      <button value="=" className="span-two" onClick={() => dispatch({type: ACTIONS.EVALUATE})}>=</button>
     </div>
   );
 }
